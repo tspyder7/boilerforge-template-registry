@@ -1,0 +1,23 @@
+import { getCLIVersion } from '../../utils/cliVersion';
+import { CLIContextData } from '../types/context';
+
+export class CLIContext {
+    static #instance: CLIContext;
+    readonly data: CLIContextData;
+
+    private constructor() {
+        const dirPath = __dirname;
+        const version = getCLIVersion();
+        this.data = {
+            dirPath,
+            version,
+        };
+    }
+
+    static getContext(): CLIContext {
+        if (!CLIContext.#instance) {
+            CLIContext.#instance = new CLIContext();
+        }
+        return CLIContext.#instance;
+    }
+}

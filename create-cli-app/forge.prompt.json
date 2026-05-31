@@ -1,0 +1,53 @@
+{
+    "prompts": [
+        {
+            "type": "text",
+            "name": "name",
+            "description": "Name of application",
+            "prompt": {
+                "message": "Project name",
+                "defaultValue": "getCwdDirName()"
+            }
+        },
+        {
+            "type": "text",
+            "name": "description",
+            "description": "A description for application",
+            "prompt": {
+                "message": "Description",
+                "defaultValue": "''"
+            }
+        },
+        {
+            "type": "text",
+            "name": "version",
+            "description": "Application version",
+            "prompt": {
+                "message": "Version",
+                "defaultValue": "'1.0.0'"
+            },
+            "validate": {
+                "expression": "matches(input, Regex.VERSION)",
+                "error": "Invalid version format"
+            }
+        },
+        {
+            "type": "text",
+            "name": "author",
+            "description": "Name of author",
+            "prompt": {
+                "message": "Author",
+                "defaultValue": "''"
+            }
+        },
+        {
+            "type": "text",
+            "name": "gitUrl",
+            "description": "Git URL",
+            "prompt": {
+                "message": "Git URL",
+                "defaultValue": "''"
+            }
+        }
+    ]
+}

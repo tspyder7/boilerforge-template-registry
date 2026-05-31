@@ -1,0 +1,15 @@
+import { getCLIVersion } from '../utils/cliVersion';
+
+export const CLI = {
+    NAME: '{{name}}',
+    DESCRIPTION:
+        '{{description}}',
+    VERSION: getCLIVersion(),
+} as const;
+
+export const CMDOptions = {
+    VERSION: {
+        flags: '-v, --version',
+        description: 'Output the version number',
+    },
+} as const;
