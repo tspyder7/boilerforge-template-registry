@@ -1,0 +1,73 @@
+{
+    "name": "{{name}}",
+    "version": "{{version}}",
+    "description": "{{description}}",
+    "author": "{{author}}",
+    "license": "MIT",
+    "main": "dist/cli.js",
+    "bin": {
+        "{{name}}": "dist/cli.js"
+    },
+    "files": [
+        "dist",
+        "LICENSE",
+        "README.md"
+    ],
+    "engines": {
+        "node": ">= 24"
+    },
+    "scripts": {
+        "clean": "rimraf dist",
+        "ci": "pnpm install --frozen-lockfile",
+        "build": "ts-node esbuild.config.ts",
+        "prebuild": "pnpm run clean && pnpm run lint && pnpm run format",
+        "start": "node dist/cli.js",
+        "lint": "eslint --ext .js,.ts .",
+        "format": "prettier --write \"**/*.+(js|ts)\"",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "ts-node bin/cli.ts",
+        "prepare": "husky"
+    },
+    "keywords": [],
+    "repository": {
+        "type": "git",
+        "url": "{{gitUrl}}"
+    },
+    "packageManager": "pnpm@10.9.0",
+    "devDependencies": {
+        "@commitlint/cli": "^19.8.1",
+        "@commitlint/config-conventional": "^19.8.1",
+        "@eslint/js": "^9.25.1",
+        "@types/jexl": "^2.3.4",
+        "@types/lodash": "^4.17.20",
+        "@types/node": "^22.15.2",
+        "@typescript-eslint/eslint-plugin": "^8.31.0",
+        "@typescript-eslint/parser": "^8.31.0",
+        "esbuild": "^0.25.3",
+        "esbuild-plugin-copy": "^2.1.1",
+        "eslint": "^9.25.1",
+        "globals": "^16.0.0",
+        "husky": "^9.1.7",
+        "prettier": "^3.5.3",
+        "rimraf": "^6.0.1",
+        "ts-node": "^10.9.2",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.31.0"
+    },
+    "dependencies": {
+        "ajv": "^8.17.1",
+        "ajv-errors": "^3.0.0",
+        "ajv-keywords": "^5.1.0",
+        "chalk": "^5.4.1",
+        "commander": "^13.1.0",
+        "enquirer": "^2.4.1",
+        "execa": "^9.5.2",
+        "globby": "^14.1.0",
+        "handlebars": "^4.7.8",
+        "inquirer": "^12.6.1",
+        "jexl": "^2.3.0",
+        "listr2": "^8.3.2",
+        "lodash": "^4.17.21"
+    }
+}

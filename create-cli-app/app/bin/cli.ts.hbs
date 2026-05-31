@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+import * as CLIApp from '../src/modules/cli/commands';
+
+(async function () {
+    CLIApp.default.parse(process.argv);
+})();

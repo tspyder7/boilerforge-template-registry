@@ -1,0 +1,36 @@
+import { Command } from 'commander';
+import {
+    GetOptions,
+    ISubCommand,
+    SubCommandConfig,
+} from '../../../../../types/cli';
+import { SubCommands } from '../../config/sub-commands';
+
+type SayHelloOptions = GetOptions<typeof SubCommands.SAY_HELLO>;
+
+export default class SayHelloOptionsCommand
+    implements ISubCommand<typeof SubCommands.SAY_HELLO>
+{
+    readonly config: SubCommandConfig = SubCommands.SAY_HELLO;
+
+    register(program: Command) {
+        const { command, description, options } = this.config;
+        const cmd = program.command(command).description(description);
+
+        options?.forEach((option) =>
+            cmd.option(option.flags, option.description, option.default),
+        );
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        cmd.action(async (...args: any[]) => {
+            args.pop(); // remove the self object
+            const options = args.pop();
+            await this.action(args, options);
+        });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async action(args: string[], options: SayHelloOptions) {
+        console.log('Hello from the {{name}}:)')
+    }
+}
