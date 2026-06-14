@@ -1,0 +1,22 @@
+import {
+    CompositeCommand,
+    CommandType,
+    LeafCommand,
+    CommandRegistry,
+} from '../../types/cli';
+
+import * as ListSubCommands from './hi/commands';
+
+export default {
+    SAY_HELLO: {
+        type: CommandType.SUB_COMMAND,
+        command: 'say-hello',
+        description: 'Say Hello to User',
+    } as LeafCommand,
+    HI: {
+        type: CommandType.COMMAND_GROUP,
+        command: 'hi',
+        description: 'Say Hi',
+        subCommands: Object.values(ListSubCommands),
+    } as CompositeCommand,
+} as const satisfies CommandRegistry;

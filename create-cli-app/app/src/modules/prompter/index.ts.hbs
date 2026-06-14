@@ -1,10 +1,10 @@
 import { prompt } from 'enquirer';
-import { PromptParser } from './prompt.parser';
-import { AppArgs } from '../../types/common';
+import { PromptCompiler } from './prompt.compiler';
+import { AppArguments } from '../../types/common';
 
-export const dispatchPrompts = async (): Promise<AppArgs> => {
-    const parser = new PromptParser();
+export const dispatchPrompts = async (): Promise<AppArguments> => {
+    const parser = new PromptCompiler();
     const promptConfig = await parser.parse();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (await prompt(promptConfig as any)) as AppArgs;
+    return (await prompt(promptConfig as any)) as AppArguments;
 };

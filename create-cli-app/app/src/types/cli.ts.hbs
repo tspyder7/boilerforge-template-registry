@@ -13,7 +13,7 @@ export type CLIConfiguration = {
     version: SemVersion;
 };
 
-type DefaultType<T> = T extends boolean
+type NormalizeDefault<T> = T extends boolean
     ? boolean
     : T extends number
       ? number
@@ -21,55 +21,70 @@ type DefaultType<T> = T extends boolean
         ? string
         : T;
 
-// Extracts the flag name from a string like "-d, --detailed" or "--format <type>"
 type ExtractFlagName<S extends string> =
     S extends `${string}--${infer Long} ${string}`
-        ? TrimKebab<Long> // Handle "--long <arg>"
+        ? TrimKebab<Long>
         : S extends `${string}--${infer Long}`
-          ? TrimKebab<Long> // Handle "--long"
+          ? TrimKebab<Long>
           : S extends `${string}-${infer Short} ${string}`
-            ? Short // Handle "-s <arg>"
+            ? Short
             : S extends `${string}-${infer Short}`
-              ? Short // Handle "-s"
+              ? Short
               : never;
 
-// Helper to remove commas or trailing spaces from the extracted name
 type TrimKebab<T extends string> = T extends `${infer Word},${string}`
     ? Word
     : T;
 
-// Converts kebab-case (detailed-data) to camelCase (detailedData)
 type KebabToCamel<S extends string> = S extends `${infer T}-${infer U}`
     ? `${T}${Capitalize<KebabToCamel<U>>}`
     : S;
 
-// The Final Result: Extracts name and converts to camelCase
-export type MapFlag<S extends string> = KebabToCamel<ExtractFlagName<S>>;
+export type FlagToCamel<S extends string> = KebabToCamel<ExtractFlagName<S>>;
 
-export type GetOptions<T> = T extends { options: readonly any[] }
+export type InferOptions<T> = T extends { options: readonly any[] }
     ? {
-          [O in T['options'][number] as MapFlag<O['flags']>]: O extends {
+          [O in T['options'][number] as FlagToCamel<O['flags']>]: O extends {
               default: infer D;
           }
-              ? DefaultType<D>
+              ? NormalizeDefault<D>
               : string;
       }
-    : Record<string, never>;
+    : Record<string, CompositeCommand>;
 
-export type CmdProps = CLIConfiguration;
+export type CLIProps = CLIConfiguration;
 
-export interface ISubCommand<T> {
-    config: SubCommandConfig;
+export interface CommandHandler<T> {
+    config: T;
     register(program: Command): void;
-    action(args: string[], options: GetOptions<T>): void;
+    action(args: string[], options: InferOptions<T>): void;
 }
 
-export type SubCommandConfig = {
+export type OptionDefinitions = Array<{
+    flags: string;
+    description: string;
+    default?: string | string[] | boolean;
+}>;
+
+type CommandCategory = 'sub-cmd' | 'cmd-grp';
+
+export enum CommandType {
+    SUB_COMMAND = 'sub-cmd',
+    COMMAND_GROUP = 'cmd-grp',
+}
+
+export interface CommandDefinition {
+    type: CommandCategory;
     command: string;
     description: string;
-    options: Array<{
-        flags: string;
-        description: string;
-        default?: string | string[] | boolean;
-    }>;
-};
+}
+
+export interface LeafCommand extends CommandDefinition {
+    options?: OptionDefinitions;
+}
+
+export interface CompositeCommand extends CommandDefinition {
+    subCommands: Array<new (...args: any[]) => CommandHandler<any>>;
+}
+
+export type CommandRegistry = Record<string, LeafCommand | CompositeCommand>;

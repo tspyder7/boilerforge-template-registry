@@ -1,8 +1,8 @@
-import { CLI } from '../../../constants/cli.constants';
-import { BaseCommand } from '../base-command';
-import * as SubCommands from './sub-commands';
+import { CLI } from '../constants/cli.constants';
+import { CommandBuilder } from '../core/cli/command-builder';
+import * as SubCommands from './commands';
 
-export const baseCommand = BaseCommand.create({
+export const baseCommand = CommandBuilder.build({
     name: CLI.NAME,
     description: CLI.DESCRIPTION,
     version: CLI.VERSION,

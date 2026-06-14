@@ -1,0 +1,9 @@
+import { LeafCommand, CommandRegistry, CommandType } from '../../../types/cli';
+
+export default {
+    TO: {
+        type: CommandType.SUB_COMMAND,
+        command: 'to <name>',
+        description: 'To user <name>',
+    } as LeafCommand,
+} as const satisfies CommandRegistry;

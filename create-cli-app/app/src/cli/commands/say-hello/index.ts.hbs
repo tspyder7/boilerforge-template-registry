@@ -1,0 +1,19 @@
+import { InferOptions } from '../../../types/cli';
+import SubCommands from '../config';
+import { CommandRegistrar } from '../../../core/cli/command-registrar';
+import { logger } from '../../../utils/logger';
+
+type Options = InferOptions<typeof SubCommands.SAY_HELLO>;
+
+export default class SayHelloCommand extends CommandRegistrar<
+    typeof SubCommands.SAY_HELLO
+> {
+    constructor() {
+        super(SubCommands.SAY_HELLO);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async action(args: string[], options: Options) {
+        logger.info('Hello from {{name}}!');
+    }
+}

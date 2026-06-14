@@ -1,0 +1,63 @@
+import { Command } from 'commander';
+import {
+    InferOptions,
+    CommandHandler,
+    CommandDefinition,
+    LeafCommand,
+    CommandType,
+    CompositeCommand,
+} from '../../../types/cli';
+import { logger } from '../../../utils/logger';
+
+export class CommandRegistrar<
+    T extends CommandDefinition,
+> implements CommandHandler<T> {
+    config: T;
+
+    constructor(config: T) {
+        this.config = config;
+    }
+
+    register(program: Command) {
+        const { type } = this.config;
+
+        type === CommandType.SUB_COMMAND
+            ? this.handleSubCommand(program)
+            : this.handleCommandGroup(program);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    async action(args: string[], options: InferOptions<T>) {
+        logger.warn('Not Implemented:(');
+    }
+
+    private handleSubCommand(program: Command) {
+        const { command, description, options } = this
+            .config as unknown as LeafCommand;
+        const cmd = program.command(command).description(description);
+
+        options?.forEach((option) =>
+            cmd.option(option.flags, option.description, option.default),
+        );
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        cmd.action(async (...args: any[]) => {
+            args.pop(); // remove the self object
+            const options = args.pop();
+            await this.action(args, options);
+        });
+    }
+
+    private handleCommandGroup(program: Command) {
+        const { command, description, subCommands } = this
+            .config as unknown as CompositeCommand;
+
+        const cmdGroup = new Command(command).description(description);
+
+        subCommands.forEach((Cmd) => {
+            new Cmd().register(cmdGroup);
+        });
+
+        program.addCommand(cmdGroup);
+    }
+}

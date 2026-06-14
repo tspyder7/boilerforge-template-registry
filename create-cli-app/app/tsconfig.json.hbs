@@ -1,17 +1,55 @@
 {
     "compilerOptions": {
         "target": "ES2024",
-        "module": "NodeNext",
+        "module": "nodenext",
         "moduleResolution": "nodenext",
         "outDir": "./dist",
-        "types": ["node"],
+        "types": [
+            "node"
+        ],
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "strict": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@bin/*": [
+                "./bin/*"
+            ],
+            "@cli": [
+                "./src/cli/index.ts"
+            ],
+            "@cli/*": [
+                "./src/cli/*"
+            ],
+            "@constants": [
+                "./src/constants/index.ts"
+            ],
+            "@constants/*": [
+                "./src/constants/*"
+            ],
+            "@core/*": [
+                "./src/core/*"
+            ],
+            "@modules/*": [
+                "./src/modules/*"
+            ],
+            "@types/*": [
+                "./src/types/*"
+            ],
+            "@utils/*": [
+                "./src/utils/*"
+            ]
+        }
     },
     "include": [
         "bin/**/*.ts",
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "esbuild.config.ts"
+    ],
+    "exclude": [
+        "chore/**/*.ts"
     ]
 }
