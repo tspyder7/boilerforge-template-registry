@@ -2,6 +2,7 @@
 import { Listr, ListrTaskWrapper } from 'listr2';
 import { Task } from './task.model';
 import { TaskExecutorProps } from '../../types/task';
+import { logger } from '../../utils/logger';
 
 export class TaskExecutor {
     public tasks: Task[] = [];
@@ -33,7 +34,7 @@ export class TaskExecutor {
             };
             await this.taskExecutor.run();
         } catch (error) {
-            console.log(error);
+            logger.err(error);
             const rollbacks = this.tasks
                 .map(({ rollback }) => rollback)
                 .reverse();

@@ -1,0 +1,28 @@
+import { merge } from 'lodash';
+import { ExpressionContextData } from '../types/context';
+
+export class ExpressionContext {
+    static #instance: ExpressionContext;
+    data: ExpressionContextData;
+
+    private constructor() {
+        this.data = {
+            global: {
+                cwd: process.cwd(),
+                platform: process.platform,
+            },
+        };
+    }
+
+    static getContext(): ExpressionContext {
+        if (!ExpressionContext.#instance) {
+            ExpressionContext.#instance = new ExpressionContext();
+        }
+        return ExpressionContext.#instance;
+    }
+
+    static setContext(data: ExpressionContextData) {
+        const ctx = this.getContext();
+        ctx.data = merge({}, ctx.data, data);
+    }
+}

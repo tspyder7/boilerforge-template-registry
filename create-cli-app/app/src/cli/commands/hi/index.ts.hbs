@@ -1,0 +1,8 @@
+import SubCommands from '../config';
+import { CommandRegistrar } from '../../../core/cli/command-registrar';
+
+export default class HiCommand extends CommandRegistrar<typeof SubCommands.HI> {
+    constructor() {
+        super(SubCommands.HI);
+    }
+}

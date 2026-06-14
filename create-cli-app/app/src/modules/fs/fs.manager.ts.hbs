@@ -11,13 +11,13 @@ import {
 import { join, sep } from 'path';
 import { pipeline } from 'stream/promises';
 import { logger } from '../../utils/logger';
-import { FileResource } from './file.model';
+import { File } from './file.model';
 
 /**
  * Handles physical file system operations for a specific FileResource.
  */
 export class FileHandler {
-    constructor(public file: FileResource) {}
+    constructor(public file: File) {}
 
     /**
      * Persists the file to disk.
@@ -69,7 +69,7 @@ export class FileHandler {
      * @param sourceFile - The FileResource representing the source file.
      * @throws {Error} If the source file does not exist on disk.
      */
-    async copy(sourceFile: FileResource) {
+    async copy(sourceFile: File) {
         const { absPath: src } = sourceFile.metadata;
         const { absPath: dest, dirPath: destDir } = this.file.metadata;
 

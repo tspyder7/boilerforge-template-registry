@@ -1,10 +1,10 @@
-import { AppArgs, JSONObject } from '../../types/common';
+import { AppArguments, JSONObject } from '../../types/common';
 
 export interface Context {
     readonly dirPath: string;
 }
 
-export interface AppContextData extends AppArgs {}
+export interface AppContextData extends AppArguments {}
 
 export interface CLIContextData extends Context {
     readonly version: string;
@@ -19,4 +19,4 @@ export interface PromptContextData extends JSONObject {
     app: JSONObject;
 }
 
-export interface ExprContextData extends JSONObject {}
+export interface ExpressionContextData extends JSONObject {}

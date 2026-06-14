@@ -1,12 +1,13 @@
 import { Context } from 'jexl/Expression';
 import { PromptContext } from '../../core/context/prompt.context';
-import { parser } from './expr.parser';
-import { ExprContext } from '../../core/context/expr.context';
+import { parser } from './expression.parser';
+import { ExpressionContext } from '../../core/context/expression.context';
 import { Regex } from '../../constants';
+import { logger } from '../../utils/logger';
 
-export class Expr {
+export class Expression {
     static {
-        ExprContext.setContext({
+        ExpressionContext.setContext({
             Regex: {
                 PROJECT_NAME: Regex.PROJECT_NAME,
                 VERSION: Regex.APP_VERSION,
@@ -22,7 +23,7 @@ export class Expr {
                 throw new Error('Expression cannot be empty.');
 
             const { data: promptCtx } = PromptContext.getContext();
-            const { data: exprCtx } = ExprContext.getContext();
+            const { data: exprCtx } = ExpressionContext.getContext();
 
             return (await parser.eval(expression, {
                 ...(ctx || {}),
@@ -30,7 +31,7 @@ export class Expr {
                 ...exprCtx,
             })) as T;
         } catch (error) {
-            console.log(`Error: ${error}`);
+            logger.err(`Error: ${error}`);
             throw error;
         }
     }
