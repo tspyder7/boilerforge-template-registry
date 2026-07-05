@@ -1,5 +1,5 @@
 ---
-name: git-commit-helper
+name: generate-commit-message
 description:
     Generate conventional commit messages automatically. Use when user runs git commit, stages
     changes, or asks for commit message help. Analyzes git diff to create clear, descriptive
