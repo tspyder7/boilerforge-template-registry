@@ -15,14 +15,14 @@ on:
       - main
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: $\{{ github.workflow }}-$\{{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   setup-release:
     runs-on: ubuntu-latest
     outputs:
-      release-type: ${{ steps.determine.outputs.release-type }}
+      release-type: $\{{ steps.determine.outputs.release-type }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v5
@@ -31,7 +31,7 @@ jobs:
 
       - id: determine
         run: |
-          release_type_input="${{ github.event.inputs.release-type }}"
+          release_type_input="$\{{ github.event.inputs.release-type }}"
 
           if [ -n "$release_type_input" ]; then
             type="$release_type_input"
@@ -64,7 +64,7 @@ jobs:
     uses: tspyder7/github-actions-lib/.github/workflows/release-pipeline.yml@main
     with:
       environment: production
-      release-type: ${{ needs.setup-release.outputs.release-type }}
+      release-type: $\{{ needs.setup-release.outputs.release-type }}
       publish: |
         {
           "uses": "tspyder7/github-actions-lib/actions/npm-publish@main",
@@ -72,8 +72,8 @@ jobs:
             "package-manager": "pnpm",
             "node-version": "24",
             "registry-url": "https://registry.npmjs.org/",
-            "publish-tag": "${{ needs.setup-release.outputs.release-type }}"
+            "publish-tag": "$\{{ needs.setup-release.outputs.release-type }}"
           }
         }
     secrets:
-      GH_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
+      GH_TOKEN: $\{{ secrets.GH_REPO_TOKEN }}
