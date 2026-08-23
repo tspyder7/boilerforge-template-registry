@@ -1,0 +1,63 @@
+{
+    "prompts": [
+        {
+            "type": "text",
+            "name": "name",
+            "description": "Name of the library",
+            "prompt": {
+                "message": "Project name",
+                "defaultValue": "getCwdDirName()"
+            }
+        },
+        {
+            "type": "text",
+            "name": "description",
+            "description": "A description for the library",
+            "prompt": {
+                "message": "Description",
+                "defaultValue": "''"
+            }
+        },
+        {
+            "type": "text",
+            "name": "version",
+            "description": "Library version",
+            "prompt": {
+                "message": "Version",
+                "defaultValue": "'1.0.0'"
+            },
+            "validate": {
+                "expression": "matches(input, Regex.VERSION)",
+                "error": "Invalid version format"
+            }
+        },
+        {
+            "type": "text",
+            "name": "author",
+            "description": "Name of author",
+            "prompt": {
+                "message": "Author",
+                "defaultValue": "''"
+            }
+        },
+        {
+            "type": "select",
+            "name": "packageManager",
+            "description": "Package manager used by the library",
+            "prompt": {
+                "message": "Package manager",
+                "defaultValue": "'3'"
+            },
+            "choices": [
+                { "name": "npm", "value": "npm" },
+                { "name": "yarn", "value": "yarn" },
+                { "name": "pnpm", "value": "pnpm" },
+                { "name": "bun", "value": "bun" }
+            ],
+            "validate": {
+                "expression": "input in ['npm', 'yarn', 'pnpm', 'bun']",
+                "error": "Invalid package manager"
+            }
+        }
+    ]
+}
