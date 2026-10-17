@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+protected_branches="main"
+
+branch="$(git branch --show-current)"
+
+for protected in $protected_branches; do
+  if [ "$branch" = "$protected" ]; then
+    echo "❌ Direct pushes to '$branch' are blocked."
+    echo "Create a branch and open a Pull Request instead."
+    exit 1
+  fi
+done
