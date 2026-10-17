@@ -1,0 +1,51 @@
+# {{name}}
+
+{{description}}
+
+## Overview
+
+`{{name}}` is a TypeScript scaffold for building GitHub workflow automation.
+It comes pre-wired with the tooling used across projects:
+
+- **TypeScript** — strict, ESM, with the `@/*` path alias
+- **Vitest** — unit tests with coverage thresholds
+- **ESLint + Prettier** — linting and formatting
+- **Husky + commitlint + lint-staged** — conventional commits and pre-commit checks
+- **OpenCode tooling** — `.agents/` rules and skills, `.opencode/commands/` slash commands
+
+## Requirements
+
+- [Bun](https://bun.sh) — installs dependencies and runs the project
+
+## Getting started
+
+```bash
+bun install # installs dependencies and sets up the husky hooks
+bun run src/index.ts
+```
+
+## Scripts
+
+| Command           | Description                            |
+| ----------------- | -------------------------------------- |
+| `bun run build`   | Type-check the project (`tsc --noEmit`) |
+| `bun run lint`    | Lint with ESLint                       |
+| `bun run format`  | Format with Prettier                   |
+| `bun run test`    | Run the test suite with coverage       |
+
+## Project structure
+
+```text
+.
+├── .agents/            # Agent rules and skills
+├── .husky/             # Git hooks (commit-msg, pre-commit, pre-push)
+├── .opencode/          # OpenCode commands
+├── src/                # Application source
+│   └── index.ts        # Entry point
+└── tests/              # Test suite
+    └── fixtures/       # Shared test fixtures and setup
+```
+
+## License
+
+See [LICENSE](LICENSE) for license information.

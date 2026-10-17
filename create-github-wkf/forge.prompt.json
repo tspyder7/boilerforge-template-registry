@@ -1,0 +1,22 @@
+{
+    "prompts": [
+        {
+            "type": "text",
+            "name": "name",
+            "description": "Name of the workflow project",
+            "prompt": {
+                "message": "Project name",
+                "defaultValue": "getCwdDirName()"
+            }
+        },
+        {
+            "type": "text",
+            "name": "description",
+            "description": "A description for the workflow project",
+            "prompt": {
+                "message": "Description",
+                "defaultValue": "''"
+            }
+        }
+    ]
+}
