@@ -1,0 +1,264 @@
+import Link from 'next/link';
+import { ThemeToggle } from './theme-toggle';
+
+const CENTER_X = 320;
+const CENTER_Y = 230;
+
+const projectFacts = [
+  { label: 'Framework', value: 'Next.js 16.4.3 · App Router' },
+  { label: 'Runtime', value: 'React 19.3 · TypeScript 5' },
+  { label: 'Styling', value: 'Tailwind CSS v4' },
+  { label: 'Rendering', value: 'Cache Components · Partial Prefetching' },
+  { label: 'Tooling', value: 'pnpm 10.9 · Turbopack' },
+];
+
+const startFiles = [
+  { path: 'src/app/page.tsx', note: 'Compose the landing page.' },
+  { path: 'src/app/layout.tsx', note: 'Shape metadata and the app shell.' },
+];
+
+const orbits = [
+  { radius: 56, duration: 14, offset: -2, size: 3.8, color: 'fill-orbit-planet-a', ring: false, angle: -50 },
+  { radius: 96, duration: 19, offset: -7, size: 2.8, color: 'fill-orbit-planet-b', ring: false, angle: -15 },
+  { radius: 136, duration: 25, offset: -13, size: 4.8, color: 'fill-orbit-planet-c', ring: true, angle: 35 },
+  { radius: 176, duration: 32, offset: -4, size: 3.2, color: 'fill-orbit-planet-a', ring: false, angle: 65 },
+  { radius: 216, duration: 40, offset: -19, size: 3.8, color: 'fill-orbit-planet-b', ring: false, angle: -30 },
+];
+
+const stars = [
+  { x: 52, y: 92, r: 1.1, delay: 0 },
+  { x: 104, y: 46, r: 0.8, delay: 1.2 },
+  { x: 156, y: 148, r: 1, delay: 2.4 },
+  { x: 206, y: 64, r: 0.7, delay: 0.6 },
+  { x: 258, y: 112, r: 1.2, delay: 3.1 },
+  { x: 352, y: 58, r: 0.9, delay: 1.8 },
+  { x: 402, y: 128, r: 1.1, delay: 0.3 },
+  { x: 456, y: 72, r: 0.7, delay: 2.7 },
+  { x: 512, y: 132, r: 1, delay: 1.5 },
+  { x: 572, y: 88, r: 0.8, delay: 3.5 },
+  { x: 76, y: 214, r: 0.8, delay: 2.1 },
+  { x: 142, y: 264, r: 1, delay: 0.9 },
+  { x: 498, y: 238, r: 0.9, delay: 2.9 },
+  { x: 566, y: 202, r: 1.1, delay: 1.1 },
+  { x: 82, y: 342, r: 0.8, delay: 1.7 },
+  { x: 188, y: 404, r: 1, delay: 2.6 },
+  { x: 454, y: 388, r: 0.9, delay: 0.4 },
+  { x: 552, y: 326, r: 1.1, delay: 3.2 },
+];
+
+function CompassMark({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 40 40" fill="none" aria-hidden="true" className={className}>
+      <circle cx="20" cy="20" r="18.25" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M20 8l3.5 12L20 32l-3.5-12L20 8Z" fill="currentColor" />
+      <circle cx="20" cy="20" r="2.2" className="fill-paper" />
+      <path d="M7.5 20h5M27.5 20h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function PlanetShape({ size, color, ring }: { size: number; color: string; ring: boolean }) {
+  return (
+    <>
+      <circle r={size * 2.2} className={color} opacity="0.12" />
+      <circle r={size} className={color} />
+      {ring ? (
+        <ellipse
+          rx={size * 2.6}
+          ry={size * 0.85}
+          fill="none"
+          stroke="currentColor"
+          className="stroke-orbit-accent"
+          strokeWidth="1.4"
+          opacity="0.65"
+          transform="rotate(-22)"
+        />
+      ) : null}
+    </>
+  );
+}
+
+function OrbitVisual() {
+  return (
+    <div className="relative mx-auto w-full max-w-[620px]">
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 size-[72%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orbit-core opacity-[0.05] blur-3xl"
+        aria-hidden="true"
+      />
+      <svg
+        viewBox="0 0 640 460"
+        className="relative w-full"
+        role="img"
+        aria-label="Decorative animation of planets orbiting along concentric circles"
+      >
+        <defs>
+          <radialGradient id="core-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--orbit-core)" stopOpacity="var(--orbit-glow-opacity)" />
+            <stop offset="100%" stopColor="var(--orbit-core)" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="var(--orbit-core)" stopOpacity="var(--sun-glow-opacity)" />
+            <stop offset="45%" stopColor="var(--orbit-core)" stopOpacity="calc(var(--sun-glow-opacity) * 0.3)" />
+            <stop offset="100%" stopColor="var(--orbit-core)" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        <g className="fill-ink" opacity="0.35">
+          {stars.map((star) => (
+            <circle key={`${star.x}-${star.y}`} cx={star.x} cy={star.y} r={star.r} className="twinkle" style=\{{ animationDelay: `${star.delay}s` }} />
+          ))}
+        </g>
+
+        <circle cx={CENTER_X} cy={CENTER_Y} r="232" fill="url(#core-glow)" />
+        <circle cx={CENTER_X} cy={CENTER_Y} r="150" fill="url(#sun-glow)" />
+
+        <g fill="none" stroke="currentColor">
+          {orbits.map((orbit, index) => (
+            <circle
+              key={orbit.radius}
+              cx={CENTER_X}
+              cy={CENTER_Y}
+              r={orbit.radius}
+              className={index === 2 ? 'text-orbit-accent' : 'text-orbit-line'}
+              strokeWidth={index === 2 ? 2.2 : 1.8}
+              strokeDasharray={index % 2 === 1 ? '2 6' : undefined}
+              opacity={index === 2 ? 0.6 : 0.9}
+            />
+          ))}
+        </g>
+
+        <circle cx={CENTER_X} cy={CENTER_Y} r="34" className="fill-orbit-core" opacity="0.9" />
+
+        <g className="orbit-motion">
+          {orbits.map((orbit) => {
+            const path = `M ${CENTER_X} ${CENTER_Y} m -${orbit.radius} 0 a ${orbit.radius} ${orbit.radius} 0 1 0 ${orbit.radius * 2} 0 a ${orbit.radius} ${orbit.radius} 0 1 0 -${orbit.radius * 2} 0`;
+
+            return (
+              <g key={orbit.radius}>
+                <animateMotion dur={`${orbit.duration}s`} begin={`${orbit.offset}s`} repeatCount="indefinite" path={path} />
+                <PlanetShape size={orbit.size} color={orbit.color} ring={orbit.ring} />
+              </g>
+            );
+          })}
+        </g>
+
+        <g className="orbit-static">
+          {orbits.map((orbit) => {
+            const radians = (orbit.angle * Math.PI) / 180;
+
+            return (
+              <g
+                key={orbit.radius}
+                transform={`translate(${CENTER_X + orbit.radius * Math.cos(radians)} ${CENTER_Y + orbit.radius * Math.sin(radians)})`}
+              >
+                <PlanetShape size={orbit.size} color={orbit.color} ring={orbit.ring} />
+              </g>
+            );
+          })}
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <div className="relative flex min-h-svh flex-col lg:h-svh lg:overflow-hidden">
+      <header className="flex items-center justify-between gap-4 px-6 py-6 sm:px-10 lg:px-14">
+        <Link href="/" className="group flex items-center gap-3" aria-label="{{name}} home">
+          <span className="grid size-9 place-items-center rounded-full border border-line bg-paper text-sea transition-colors group-hover:border-sea/40 group-hover:text-terracotta">
+            <CompassMark className="size-5" />
+          </span>
+          <span className="leading-none">
+            <span className="block font-display text-xl tracking-tight text-ink">{{name}}</span>
+          </span>
+        </Link>
+
+        <div className="flex items-center gap-3">
+          <span className="hidden rounded-full border border-line bg-paper/60 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.24em] text-muted sm:inline-block">
+            Project starter
+          </span>
+          <ThemeToggle />
+        </div>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-12 px-6 pb-14 pt-2 sm:px-10 lg:min-h-0 lg:flex-row lg:gap-20 lg:overflow-hidden lg:px-14 lg:pb-0">
+        <section aria-label="Orbit animation" className="order-1 lg:flex lg:h-full lg:w-[52%] lg:shrink-0 lg:flex-col lg:justify-center lg:py-10">
+          <OrbitVisual />
+        </section>
+
+        <section
+          aria-labelledby="project-title"
+          className="brief-scroll order-2 w-full max-w-xl lg:h-full lg:min-h-0 lg:w-[48%] lg:max-w-none lg:overflow-y-auto lg:overscroll-contain lg:border-l lg:border-line lg:py-10 lg:pr-5 lg:pl-14 xl:pl-16"
+        >
+          <p className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.3em] text-terracotta">
+            <span className="h-px w-6 bg-terracotta/50" aria-hidden="true" />
+            Project brief · v{{version}}
+          </p>
+
+          <h1 id="project-title" className="mt-5 font-display text-5xl leading-none tracking-[-0.03em] text-ink sm:text-6xl">
+            {{name}}
+          </h1>
+
+          <p className="mt-5 max-w-md text-[17px] leading-7 text-muted">
+            A fresh Next.js foundation for {{name}}. The scaffold is in place — the next move is yours.
+          </p>
+
+          <dl className="mt-8 border-t border-line">
+            {projectFacts.map((fact) => (
+              <div key={fact.label} className="grid grid-cols-[6.5rem_1fr] gap-4 border-b border-line py-2.5 sm:grid-cols-[8rem_1fr]">
+                <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">{fact.label}</dt>
+                <dd className="text-[13px] leading-5 text-ink">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-7">
+            <h2 className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">Run it locally</h2>
+            <pre className="mt-2.5 overflow-x-auto rounded-xl border border-line bg-paper/80 px-4 py-3 font-mono text-[12.5px] leading-6 text-ink">
+              <code>
+                <span className="select-none text-muted">$ </span>pnpm dev{'\n'}
+                <span className="select-none text-muted">→ </span>http://localhost:3000
+              </code>
+            </pre>
+          </div>
+
+          <div className="mt-7">
+            <h2 className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">Where to start</h2>
+            <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2">
+              {startFiles.map((file) => (
+                <div key={file.path} className="rounded-xl border border-line bg-paper/60 p-4">
+                  <p className="font-mono text-[11px] text-terracotta">{file.path}</p>
+                  <p className="mt-1.5 text-[13px] leading-5 text-muted">{file.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-7 rounded-2xl border border-terracotta/25 bg-terracotta/[0.06] p-5 sm:p-6">
+            <p className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.24em] text-terracotta">
+              <span className="size-1.5 rounded-full bg-terracotta" aria-hidden="true" />
+              Your turn
+            </p>
+            <p className="mt-3 font-display text-[1.6rem] leading-[1.2] tracking-[-0.01em] text-ink">
+              Start developing by changing{' '}
+              <code className="rounded bg-paper/80 px-1.5 py-0.5 font-mono text-[0.72em] text-terracotta">src/app/page.tsx</code> and{' '}
+              <code className="rounded bg-paper/80 px-1.5 py-0.5 font-mono text-[0.72em] text-terracotta">src/app/layout.tsx</code>.
+            </p>
+            <p className="mt-2 text-[13px] leading-6 text-muted">
+              Replace this brief with the real {{name}} experience. The foundation is ready.
+            </p>
+          </div>
+
+          <p className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[9px] uppercase tracking-[0.18em] text-muted">
+            <span>{{name}}</span>
+            <span aria-hidden="true">·</span>
+            <span>Scaffolded with create-next-app</span>
+            <span aria-hidden="true">·</span>
+            <span>2026</span>
+          </p>
+        </section>
+      </main>
+    </div>
+  );
+}

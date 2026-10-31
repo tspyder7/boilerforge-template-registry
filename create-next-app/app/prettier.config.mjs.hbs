@@ -1,0 +1,49 @@
+/**
+ * @type {import('prettier').Config}
+ */
+
+const config = {
+  printWidth: 150,
+  tabWidth: 2,
+  useTabs: false,
+  endOfLine: 'lf',
+  semi: true,
+  singleQuote: true,
+  trailingComma: 'all',
+  arrowParens: 'always',
+  jsxSingleQuote: false,
+  bracketSameLine: false,
+  bracketSpacing: true,
+  proseWrap: 'preserve',
+  htmlWhitespaceSensitivity: 'css',
+  overrides: [
+    {
+      files: ['*.json', '*.jsonc'],
+      options: {
+        printWidth: 120,
+        tabWidth: 2,
+        useTabs: false,
+        semi: false,
+        singleQuote: false,
+        trailingComma: 'none',
+        bracketSpacing: true,
+      },
+    },
+    {
+      files: ['*.md', '*.mdx'],
+      options: {
+        proseWrap: 'preserve',
+        printWidth: 100,
+      },
+    },
+    {
+      files: ['*.yaml', '*.yml'],
+      options: {
+        singleQuote: false,
+        tabWidth: 2,
+      },
+    },
+  ],
+};
+
+export default config;
