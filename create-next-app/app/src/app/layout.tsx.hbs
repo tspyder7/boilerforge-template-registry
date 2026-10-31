@@ -1,0 +1,75 @@
+import type { Metadata, Viewport } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import Script from 'next/script';
+import './globals.css';
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+});
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+});
+
+const description = 'The Next.js starter for {{name}}. Start building by editing src/app/page.tsx and src/app/layout.tsx.';
+
+const themeScript = `
+(function () {
+  try {
+    if (localStorage.getItem('{{name}}-theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    }
+  } catch (_) {}
+})();
+`;
+
+export const metadata: Metadata = {
+  title: {
+    default: '{{name}} — Project starter',
+    template: '%s · {{name}}',
+  },
+  description,
+  applicationName: '{{name}}',
+  keywords: ['{{name}}', 'Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'project starter'],
+  authors: [{ name: '{{name}}' }],
+  creator: '{{name}}',
+  openGraph: {
+    type: 'website',
+    siteName: '{{name}}',
+    locale: 'en_US',
+    title: '{{name}} — Project starter',
+    description,
+  },
+  twitter: {
+    card: 'summary',
+    title: '{{name}} — Project starter',
+    description,
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0d1211' },
+  ],
+  colorScheme: 'light dark',
+};
+
+export default function RootLayout({ children }: LayoutProps<'/'>) {
+  return (
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`} suppressHydrationWarning>
+      <body className="flex min-h-full flex-col">
+        <Script id="{{name}}-theme" strategy="beforeInteractive">
+          {themeScript}
+        </Script>
+        {children}
+      </body>
+    </html>
+  );
+}

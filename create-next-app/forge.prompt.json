@@ -1,0 +1,26 @@
+{
+    "prompts": [
+        {
+            "type": "text",
+            "name": "name",
+            "description": "Name of application",
+            "prompt": {
+                "message": "Project name",
+                "defaultValue": "getCwdDirName()"
+            }
+        },
+        {
+            "type": "text",
+            "name": "version",
+            "description": "Application version",
+            "prompt": {
+                "message": "Version",
+                "defaultValue": "'0.1.0'"
+            },
+            "validate": {
+                "expression": "matches(input, Regex.VERSION)",
+                "error": "Invalid version format"
+            }
+        }
+    ]
+}
